@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UploadHelper;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,15 +27,38 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $oldAvatar = $user->avatar_url;
+        
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('avatar')) {
+            $user->avatar_url = UploadHelper::uploadAvatar($request->file('avatar'), $oldAvatar);
         }
 
-        $request->user()->save();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->save();
+
+        return Redirect::back()->with('status', 'profile-updated');
+    }
+
+    /**
+     * Delete the user's avatar.
+     */
+    public function destroyAvatar(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->avatar_url) {
+            UploadHelper::deletePublicImage($user->avatar_url);
+            $user->avatar_url = null;
+            $user->save();
+        }
+
+        return Redirect::back()->with('status', 'avatar-deleted');
     }
 
     /**

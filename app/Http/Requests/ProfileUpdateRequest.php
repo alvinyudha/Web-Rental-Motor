@@ -19,13 +19,17 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
-                'required',
+                'sometimes',
                 'string',
                 'lowercase',
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'whatsapp' => ['nullable', 'string', 'max:20'],
+            'ktp_number' => ['nullable', 'string', 'max:50'],
+            'sim_number' => ['nullable', 'string', 'max:50'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
         ];
     }
 }

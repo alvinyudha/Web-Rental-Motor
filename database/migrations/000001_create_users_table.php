@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('role_id')->nullable()->references('id')->on('roles')->nullOnDelete();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->now();
+            $table->string('whatsapp', 20)->nullable();
+            $table->string('ktp_number', 30)->nullable();
+            $table->string('sim_number', 30)->nullable();
+            $table->string('avatar_url')->nullable();
+            $table->enum('status', ['active', 'non-active', 'blocked'])->default('active');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
         });

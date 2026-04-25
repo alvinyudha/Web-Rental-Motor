@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    a,
+    button,
+    [role="button"],
+    [type="button"],
+    [type="submit"],
+    [type="reset"],
+    select,
+    summary,
+    label[for],
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    :root {
+        --primary: #3563e9;
+        --primary-light: #7091ef;
+        --primary-extralight: #eef2ff;
+        --primary-dark: #1e40af;
+        --secondary: #7091ef;
+        --text-main: #1a202c;
+        --text-muted: #64748b;
+        --bg-main: #f6f7f9;
+        --white: #ffffff;
+        --shadow: rgba(53, 99, 233, 0.1);
+    }
+
+    body {
+        @apply antialiased;
+        color: var(--text-main);
+        background-color: var(--bg-main);
+        font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+        background-color: var(--primary);
+        color: var(--white);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-light);
+        @apply shadow-lg shadow-blue-200 -translate-y-0.5;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #94a3b8;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #64748b;
+    }
+}

@@ -9,13 +9,13 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-bg-main text-text-main">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -32,5 +32,17 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <!-- Flash Alerts -->
+        @if (session('status') === 'profile-updated')
+            <x-frontend.alert type="success" message="Profil Anda berhasil diperbarui!" />
+        @elseif (session('status') === 'avatar-deleted')
+            <x-frontend.alert type="success" message="Foto profil berhasil dihapus!" />
+        @endif
+
+        @if ($errors->any())
+            <x-frontend.alert type="error" message="{{ $errors->first() }}" />
+        @endif
+
     </body>
 </html>
