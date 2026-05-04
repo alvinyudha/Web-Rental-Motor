@@ -43,16 +43,13 @@
                 <span class="material-symbols-outlined text-gray-400">
                     search
                 </span>
-                <input type="text"
-                    :name="!open ? 'search' : null"
-                    value="{{ request('search') }}"
+                <input type="text" :name="!open ? 'search' : null" value="{{ request('search') }}"
                     placeholder="Nama motor"
                     class="ml-2 w-full text-sm border-0 outline-none focus:outline-none focus:ring-0" />
             </div>
             <div class="flex gap-2">
                 <!-- Button Submit-->
-                <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-md">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md">
                     Cari
                 </button>
                 <!-- Button Reset -->
@@ -61,7 +58,7 @@
                 </a>
             </div>
         </div>
-    
+
         <!-- MOBILE HEADER -->
         <div class="lg:hidden p-4">
             <div class="flex justify-between items-center">
@@ -79,9 +76,7 @@
                 <span class="material-symbols-outlined text-gray-400">
                     search
                 </span>
-                <input type="text"
-                    :name="open ? 'search' : null"
-                    value="{{ request('search') }}"
+                <input type="text" :name="open ? 'search' : null" value="{{ request('search') }}"
                     placeholder="Nama motor"
                     class="w-full text-sm border-0 outline-none focus:outline-none focus:ring-0" />
             </div>
@@ -131,7 +126,8 @@
                 Ayo Cari
             </button>
             {{-- Reset Button --}}
-            <a href="{{ route('vehicles.index') }}" class="block text-center bg-red-600 text-white py-3 rounded-lg font-medium">
+            <a href="{{ route('vehicles.index') }}"
+                class="block text-center bg-red-600 text-white py-3 rounded-lg font-medium">
                 Reset
             </a>
         </div>

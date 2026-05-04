@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -21,13 +22,11 @@ Route::post('/register-proses', [RegisterController::class, 'register_proses'])-
 Route::middleware('admin')->group(function () {
     Route::get('admin', [AdminController::class, 'index'])->name('home.admin');
 });
-// Route::middleware('cekRole:user')->group(function () {
-//     Route::get('/user', function () {
-//         return view('user.dashboard-user');
-//     })->name('home.user');
-// });
+Route::middleware('user')->group(function () {
+    Route::get('user', [UserController::class, 'index'])->name('home.user');
+    Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
+});
 
-Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -40,4 +39,4 @@ Route::middleware('auth')->group(function () {
 });
 
 
-require __DIR__ . '/auth.php';
+// require __DIR__ . '/auth.php';

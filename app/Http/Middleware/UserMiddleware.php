@@ -7,23 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CekRole
+class UserMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            abort(403, 'Unauthorized');
+        if (Auth::check() && Auth::user()->role === 'user') {
+            return $next($request);
         }
-
-        if (!in_array(Auth::user()->role, $roles)) {
-            abort(403, 'Forbidden');
-        }
-
-        return $next($request);
+        return abort(403, 'Forbidden');
     }
 }

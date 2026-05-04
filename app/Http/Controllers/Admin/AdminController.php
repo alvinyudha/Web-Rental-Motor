@@ -10,7 +10,7 @@ class AdminController extends Controller
     public static function middleware(): array
     {
         return [
-            'cekRole:admin',
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ];
     }
 
