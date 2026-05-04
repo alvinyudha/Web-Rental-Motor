@@ -11,12 +11,10 @@ class VehicleCategory extends Model
 
     protected $fillable = [
         'name',
-        'slug',
     ];
 
     public function vehicles() // 1 to many relationship with Vehicle model
     {
-        return $this->hasMany
-        (Vehicle::class, 'category_id');
+        return $this->hasMany(Vehicle::class, 'category_id');
     }
 }

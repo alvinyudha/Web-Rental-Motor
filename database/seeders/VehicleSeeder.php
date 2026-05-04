@@ -7,6 +7,8 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
+
 
 class VehicleSeeder extends Seeder
 {
@@ -17,6 +19,8 @@ class VehicleSeeder extends Seeder
     {
         $brands = VehicleBrand::all();
         $categories = VehicleCategory::all();
+        $faker = Faker::create();
+
 
         if ($brands->isEmpty() || $categories->isEmpty()) {
             $this->command->warn('Vehicle brands and categories must be seeded before running VehicleSeeder.');
@@ -24,33 +28,6 @@ class VehicleSeeder extends Seeder
             return;
         }
 
-        $faker = fake();
-
-        $vehicleModels = [
-            'Matic' => [
-                'Vario 125',
-                'NMAX 155',
-                'Beat Street',
-                'Scoopy',
-                'Aerox 155',
-                'Lexi',
-                'Fino 125',
-                'PCX 160',
-            ],
-            'Cub' => [
-                'Supra GTR 150',
-                'Genio',
-                'Mio M3',
-                'Fazzio',
-                'Beat',
-            ],
-            'Underbone' => [
-                'MX King 150',
-                'Jupiter Z',
-                'Sniper 155',
-                'RSZ',
-            ],
-        ];
 
         $vehicleImages = [];
 
@@ -58,22 +35,46 @@ class VehicleSeeder extends Seeder
             $vehicleImages[] = sprintf('image_%02d.png', $number);
         }
 
+        $bikeModel = [
+            'Matic' => [
+                ['brand' => 'Honda', 'name' => 'Vario 150'],
+                ['brand' => 'Yamaha', 'name' => 'NMAX 155'],
+                ['brand' => 'Yamaha', 'name' => 'Aerox 155'],
+                ['brand' => 'Honda', 'name' => 'PCX 160'],
+            ],
+            'Sport' => [
+                ['brand' => 'Yamaha', 'name' => 'R15'],
+                ['brand' => 'Yamaha', 'name' => 'R25'],
+                ['brand' => 'Yamaha', 'name' => 'R35'],
+            ],
+            'Bebek' => [
+                ['brand' => 'Honda', 'name' => 'Beat'],
+                ['brand' => 'Yamaha', 'name' => 'Fazzio'],
+                ['brand' => 'Yamaha', 'name' => 'Mio M3'],
+            ],
+            'Trail' => [
+                ['brand' => 'Kawasaki', 'name' => 'Ninja 300'],
+                ['brand' => 'Kawasaki', 'name' => 'Ninja 650'],
+            ],
+            'Naked Bike' => [
+                ['brand' => 'Suzuki', 'name' => 'Hayabusa'],
+                ['brand' => 'Suzuki', 'name' => 'GSX'],
+            ]
+        ];
+
         for ($i = 0; $i < 10; $i++) {
             $category = $categories->random();
-            $brand = $brands->random();
-            $modelNames = $vehicleModels[$category->name] ?? $vehicleModels['Matic'];
-
-            $modelName = $faker->randomElement($modelNames);
-            $name = "{$brand->name} {$modelName}";
-            $slug = Str::slug($name) . "-{$i}";
+            $bike = $faker->randomElement($bikeModel[$category->name]);
+            $brand = $brands->where('name', $bike['brand'])->first() ?? $brands->random();
+            $name = $bike['brand'] . ' ' . $bike['name'];
 
             Vehicle::updateOrCreate(
-                ['slug' => $slug],
                 [
                     'category_id' => $category->id,
                     'brand_id' => $brand->id,
                     'code' => strtoupper($brand->name[0]) . $faker->bothify('??###'),
                     'name' => $name,
+                    'slug' => Str::slug($name) . '-' . $faker->unique()->numberBetween(1, 9999),
                     'plate_number' => $faker->regexify('[A-Z]{1,2} [0-9]{3,4} [A-Z]{1,2}'),
                     'fuel_tank_capacity' => $faker->optional()->randomFloat(2, 3, 12),
                     'description' => $faker->optional()->sentence(12),

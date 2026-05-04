@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Models\VehicleBrand;
+use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -16,28 +18,46 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        // Filters
-        $filters = collect($request->only(['search', 'type']))
-            ->filter()
-            ->all();
-
         $query = Vehicle::with('vehicle_category', 'vehicle_brand')
             ->orderBy('id', 'desc');
 
+        $category = VehicleCategory::all();
+        $brands = VehicleBrand::all();
         // Search Filter
-        if (!empty($filters['search'])) {
-            $query->where('name', 'like', '%' . $filters['search'] . '%');
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Type Filter
-        if (!empty($filters['type'])) {
-            $query->whereHas('vehicle_category', function ($q) use ($filters) {
-                $q->whereRaw('LOWER(name) = ?', [strtolower($filters['type'])]);
-            });
+        // Filter berdasarkan kategori
+        if ($request->has('vehicle_category') && $request->vehicle_category != '') {
+            $query->where('category_id', $request->vehicle_category);
         }
+
+        // Filter brand
+        if ($request->has('vehicle_brand') && $request->vehicle_brand != '') {
+            $query->where('brand_id', $request->vehicle_brand);
+        }
+
+        // Filter status
+        $query->when($request->operational_status, function ($q, $status) {
+            $q->where('operational_status', $status);
+        });
+
+        // Filter harga (range)
+        $query->when($request->min_price, function ($q, $min) {
+            $q->where('price_per_day', '>=', $min);
+        });
+
+        $query->when($request->max_price, function ($q, $max) {
+            $q->where('price_per_day', '<=', $max);
+        });
 
         $vehicles = $query->paginate(6)->withQueryString();
 
-        return view('user.dashboard-user', compact('vehicles'));
+        return view('user.dashboard-user', compact(
+            'vehicles',
+            'category',
+            'brands'
+        ));
     }
 }

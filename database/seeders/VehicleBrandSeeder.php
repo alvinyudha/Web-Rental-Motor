@@ -15,19 +15,19 @@ class VehicleBrandSeeder extends Seeder
      */
     public function run(): void
     {
-        $brands = ['Honda', 'Yamaha'];
-
-        $data = [];
-
-        foreach ($brands as $brand) {
-            $data[] = [
-                'name' => $brand,
-                'slug' => Str::slug($brand),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
-        DB::table('vehicle_brands')->insert($data);
+        DB::table('vehicle_brands')->insert([
+            [
+                'name' => 'Yamaha',
+            ],
+            [
+                'name' => 'Honda',
+            ],
+            [
+                'name' => 'Suzuki',
+            ],
+            [
+                'name' => 'Kawasaki',
+            ],
+        ]);
     }
 }

@@ -15,19 +15,23 @@ class VehicleCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = ['Matic', 'Cub', 'Underbone'];
 
-        $data = [];
-
-        foreach ($categories as $category) {
-            $data[] = [
-                'name' => $category,
-                'slug' => Str::slug($category),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
-        DB::table('vehicle_categories')->insert($data);
+        DB::table('vehicle_categories')->insert([
+            [
+                'name' => 'Matic',
+            ],
+            [
+                'name' => 'Sport',
+            ],
+            [
+                'name' => 'Bebek',
+            ],
+            [
+                'name' => 'Trail',
+            ],
+            [
+                'name' => 'Naked Bike',
+            ],
+        ]);
     }
 }

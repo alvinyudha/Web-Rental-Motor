@@ -14,9 +14,9 @@ class Vehicle extends Model
         'brand_id',
         'code',
         'name',
+        'slug',
         'plate_number',
         'fuel_tank_capacity',
-        'slug',
         'description',
         'price_per_day',
         'is_featured',
@@ -43,16 +43,14 @@ class Vehicle extends Model
             default => 'background-color:#f3f4f6; color:#374151;',
         };
     }
-    
+
     public function vehicle_category() // many to 1 relationship with VehicleCategory model
     {
-        return $this->belongsTo
-        (VehicleCategory::class, 'category_id');
+        return $this->belongsTo(VehicleCategory::class, 'category_id');
     }
 
     public function vehicle_brand() // many to 1 relationship with VehicleBrand model
     {
-        return $this->belongsTo
-        (VehicleBrand::class, 'brand_id');
+        return $this->belongsTo(VehicleBrand::class, 'brand_id');
     }
 }
