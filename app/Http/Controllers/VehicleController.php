@@ -56,9 +56,10 @@ class VehicleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vehicle $vehicle)
-    {
-        //
+    public function show(string $slug)
+    {   
+        $vehicle = Vehicle::where('slug', $slug)->firstOrFail();
+        return view('user.view-details', compact('vehicle'));
     }
 
     /**
