@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Models\VehicleBrand;
+use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 
 class VehiclesController extends Controller
@@ -47,7 +49,7 @@ class VehiclesController extends Controller
 
         $vehicles = $query->paginate(6)->withQueryString();
 
-        return view('user.dashboard-user', compact(
+        return view('user.vehicles-list', compact(
             'vehicles',
             'category',
             'brands'
@@ -76,7 +78,7 @@ class VehiclesController extends Controller
     public function show(string $slug)
     {
         $vehicle = Vehicle::where('slug', $slug)->firstOrFail();
-        return view('user.view-details', compact('vehicle'));
+        return view('user.vehicle-details', compact('vehicle'));
     }
 
     /**
