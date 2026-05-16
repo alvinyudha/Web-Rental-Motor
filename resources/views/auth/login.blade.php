@@ -86,7 +86,7 @@
                                             <div class="col-12 mt-5">
                                                 <div class="input-group has-validation">
                                                     <div class="input-group-text" id="inputGroupPrepend">
-                                                        <span class="bi-envelope"></span>
+                                                        <span class="bi bi-envelope"></span>
                                                     </div>
                                                     <input type="email" name="email" class="form-control"
                                                         value="{{ old('email') }}" placeholder="Email">
@@ -99,7 +99,7 @@
                                             <div class="col-12">
                                                 <div class="input-group has-validation">
                                                     <div class="input-group-text" id="inputGroupPrepend">
-                                                        <span class="bi-key"></span>
+                                                        <span class="bi bi-key"></span>
                                                     </div>
                                                     <input type="password" name="password" class="form-control"
                                                         placeholder="Password">
